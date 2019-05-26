@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Glabbr test</string>
+    <string name="action_settings">Settings</string>
+    <string name="delivered_to">Delivered to</string>
+    <string name="read_by">Read by</string>
+</resources>
