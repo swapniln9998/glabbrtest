@@ -52,7 +52,8 @@ public class deliveredToRvAdapter extends RecyclerView.Adapter<deliveredToRvAdap
 
         if(userArrayList.get(i).getStatus()==DELIVERED) {
             holder.tvUserName.setText(userArrayList.get(i).getUserName());
-            holder.tvTime.setText(userArrayList.get(i).getMessageTime());
+
+            holder.tvTime.setText(new java.text.SimpleDateFormat(" HH:mm a").format(new java.util.Date (userArrayList.get(i).getMessageTime())));
             holder.ivUserImage.setImageResource(R.mipmap.ic_launcher);
         }
     }

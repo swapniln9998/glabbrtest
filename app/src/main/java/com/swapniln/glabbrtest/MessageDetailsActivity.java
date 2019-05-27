@@ -1,5 +1,6 @@
 package com.swapniln.glabbrtest;
 
+import android.arch.lifecycle.LiveData;
 import android.os.Bundle;
 import android.support.design.card.MaterialCardView;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,8 @@ import com.swapniln.glabbrtest.model.UserObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +68,10 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
     //@BindView(R.id.rv_deliveredToUsers)
     RecyclerView rvDeliveredToUsers;
 
+
+
+    Map<Integer,UserObject> userMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,18 +110,18 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
        deliveredToList = new ArrayList<>();
 
         userObjectArrayList = new ArrayList<>();
-        userObjectArrayList.add(new UserObject(1, "user1", "", 1, ""));
-        userObjectArrayList.add(new UserObject(2, "user2", "", 1, ""));
-        userObjectArrayList.add(new UserObject(3, "user3", "", 1, ""));
-        userObjectArrayList.add(new UserObject(4, "user4", "", 1, ""));
-        userObjectArrayList.add(new UserObject(5, "user5", "", 2, ""));
-        userObjectArrayList.add(new UserObject(6, "user6", "", 2, ""));
-        userObjectArrayList.add(new UserObject(7, "user7", "", 2, ""));
-        userObjectArrayList.add(new UserObject(8, "user8", "", 2, ""));
-        userObjectArrayList.add(new UserObject(9, "user9", "", 2, ""));
-        userObjectArrayList.add(new UserObject(10, "user10", "", 2, ""));
+        userObjectArrayList.add(new UserObject(1, "user1", 0, 1, ""));
+        userObjectArrayList.add(new UserObject(2, "user2", 0, 1, ""));
+        userObjectArrayList.add(new UserObject(3, "user3", 0, 1, ""));
+        userObjectArrayList.add(new UserObject(4, "user4", 0, 1, ""));
+        userObjectArrayList.add(new UserObject(5, "user5", 0, 2, ""));
+        userObjectArrayList.add(new UserObject(6, "user6", 0, 2, ""));
+        userObjectArrayList.add(new UserObject(7, "user7", 0, 2, ""));
+        userObjectArrayList.add(new UserObject(8, "user8", 0, 2, ""));
+        userObjectArrayList.add(new UserObject(9, "user9", 0, 2, ""));
+        userObjectArrayList.add(new UserObject(10, "user10", 0, 2, ""));
 
-        sortUsers();
+
 
         readByUsersAdapter = new readByRvAdapter(this, readByList);
         deliveredToUsersAdapter = new deliveredToRvAdapter(this, deliveredToList);
@@ -129,23 +136,34 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         rvReadByUsers.setAdapter(readByUsersAdapter);
 
 
+        setUserMap(userObjectArrayList);
+        sortUsers();
+    }
+
+    private void setUserMap(ArrayList<UserObject> userObjectArrayList) {
+        userMap = new HashMap<>();
+        for (UserObject user: userObjectArrayList) {
+            userMap.put(user.getUserID(),user);
+        }
     }
 
     private void sortUsers() {
         readByList.clear();
         deliveredToList.clear();
-        for (UserObject user: userObjectArrayList) {
+
+        for (UserObject user: userMap.values()) {
             if(user.getStatus()==READ)
             {
                 // if user status is READ add to read list
                 readByList.add(user);
             }else
             {
-                //if user ststus is DELIVERED add to delivered list
+                //if user status is DELIVERED add to delivered list
                 deliveredToList.add(user);
             }
 
         }
+        notifyUI();
     }
 
     @Override
@@ -176,20 +194,26 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         if (messageObject.getMessageID() == messageId) {
             if (messageObject.updateMessageStatus(messageStatus)) {
 
-                Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
+                if(userMap.containsKey(messageStatus.getUserID()))
+                {
+                   UserObject userObject = userMap.get(messageStatus.getUserID());
+                   userObject.setStatus(messageStatus.getStatus());
+                   userObject.setMessageTime(messageStatus.getTime());
+                   userMap.put(messageStatus.getUserID(),userObject);
+                   sortUsers();
+                }
             }
 
         }
 
     }
 
-    @OnClick(R.id.fab)
-    public void onViewClicked(View v) {
+    //@OnClick(R.id.fab)
+    public void onViewClicked() {
 
         //trigger to Message notifier
         messageNotifier.updateMessageStatus(2,new MessageStatus(2,2,Calendar.getInstance().getTimeInMillis()));
-        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+       // Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     void notifyUI() {
@@ -199,5 +223,9 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         deliveredToUsersAdapter.notifyDataSetChanged();
 
 
+    }
+
+    public void onViewClicked(View view) {
+        messageNotifier.updateMessageStatus(101,new MessageStatus(2,2,Calendar.getInstance().getTimeInMillis()));
     }
 }

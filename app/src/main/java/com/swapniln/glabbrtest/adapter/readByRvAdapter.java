@@ -53,7 +53,7 @@ public class readByRvAdapter extends RecyclerView.Adapter<readByRvAdapter.userVi
 
         if(userArrayList.get(i).getStatus()==READ) {
             holder.tvUserName.setText(userArrayList.get(i).getUserName());
-            holder.tvTime.setText(userArrayList.get(i).getMessageTime());
+            holder.tvTime.setText(new java.text.SimpleDateFormat("hh:mm a").format(new java.util.Date (userArrayList.get(i).getMessageTime())));
             holder.ivUserImage.setImageResource(R.mipmap.ic_launcher);
         }
 
