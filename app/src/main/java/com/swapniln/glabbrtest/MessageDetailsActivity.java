@@ -79,11 +79,14 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //init listener
         messageNotifier = this;
+
         rvReadByUsers= findViewById(R.id.rv_readByUsers);
         rvDeliveredToUsers = findViewById(R.id.rv_deliveredToUsers);
 
-
+        // set up dummy data
         setUp();
 
 
@@ -91,6 +94,7 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
     private void setUp() {
 
+        // create dummy message status data
 
         messageStatusArrayList = new ArrayList<>();
         messageStatusArrayList.add(new MessageStatus(1, 1, Calendar.getInstance().getTimeInMillis()));
@@ -104,11 +108,13 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         messageStatusArrayList.add(new MessageStatus(9, 1, Calendar.getInstance().getTimeInMillis()));
         messageStatusArrayList.add(new MessageStatus(10, 1, Calendar.getInstance().getTimeInMillis()));
 
+        // create dummy message object
         messageObject = new MessageObject(101, Calendar.getInstance().getTimeInMillis(), "Happy Birthday !!!", messageStatusArrayList, true);
 
        readByList = new ArrayList<>();
        deliveredToList = new ArrayList<>();
 
+       // store dummy user data
         userObjectArrayList = new ArrayList<>();
         userObjectArrayList.add(new UserObject(1, "user1", 0, 1, ""));
         userObjectArrayList.add(new UserObject(2, "user2", 0, 1, ""));
@@ -137,9 +143,12 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
 
         setUserMap(userObjectArrayList);
+
+        //load data first time
         sortUsers();
     }
 
+    // load user map
     private void setUserMap(ArrayList<UserObject> userObjectArrayList) {
         userMap = new HashMap<>();
         for (UserObject user: userObjectArrayList) {
@@ -188,18 +197,25 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         return super.onOptionsItemSelected(item);
     }
 
+
+    // on Message Notifier Updated
     @Override
     public void updateMessageStatus(int messageId, MessageStatus messageStatus) {
 
         if (messageObject.getMessageID() == messageId) {
             if (messageObject.updateMessageStatus(messageStatus)) {
 
+                // check id user is present in list or not
                 if(userMap.containsKey(messageStatus.getUserID()))
                 {
                    UserObject userObject = userMap.get(messageStatus.getUserID());
                    userObject.setStatus(messageStatus.getStatus());
                    userObject.setMessageTime(messageStatus.getTime());
+
+                   // update user list
                    userMap.put(messageStatus.getUserID(),userObject);
+
+                   //sort data and update UI
                    sortUsers();
                 }
             }
@@ -208,14 +224,9 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
     }
 
-    //@OnClick(R.id.fab)
-    public void onViewClicked() {
 
-        //trigger to Message notifier
-        messageNotifier.updateMessageStatus(2,new MessageStatus(2,2,Calendar.getInstance().getTimeInMillis()));
-       // Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-    }
 
+    // notify rv Adapters
     void notifyUI() {
 
 
@@ -225,7 +236,10 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
     }
 
+
+    // on fab click
     public void onViewClicked(View view) {
         messageNotifier.updateMessageStatus(101,new MessageStatus(2,2,Calendar.getInstance().getTimeInMillis()));
+        Toast.makeText(this, "user 2 data gets updated to read status", Toast.LENGTH_SHORT).show();
     }
 }
