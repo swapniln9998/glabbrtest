@@ -28,17 +28,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.swapniln.glabbrtest.utils._const.READ;
+
 public class MessageDetailsActivity extends AppCompatActivity implements MessageNotifier {
 
     ArrayList<MessageStatus> messageStatusArrayList;
     ArrayList<UserObject> userObjectArrayList;
+    ArrayList<UserObject> readByList;
+    ArrayList<UserObject> deliveredToList;
     MessageObject messageObject;
     @BindView(R.id.tvMessageTxt)
     TextView tvMessageTxt;
     @BindView(R.id.tv_readBy)
     TextView tvReadBy;
-    @BindView(R.id.rv_readByUsers)
-    RecyclerView rvReadByUsers;
+
     @BindView(R.id.iv_messageReadStatus)
     ImageView ivMessageReadStatus;
     @BindView(R.id.cv_readByLayout)
@@ -51,12 +54,16 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
     MaterialCardView cvDeliveredToLayout;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    @BindView(R.id.rv_deliveredToUsers)
-    RecyclerView rvDeliveredToUsers;
+
 
     readByRvAdapter readByUsersAdapter;
     deliveredToRvAdapter deliveredToUsersAdapter;
 
+    MessageNotifier messageNotifier;
+   // @BindView(R.id.rv_readByUsers)
+    RecyclerView rvReadByUsers;
+    //@BindView(R.id.rv_deliveredToUsers)
+    RecyclerView rvDeliveredToUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,11 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        messageNotifier = this;
+        rvReadByUsers= findViewById(R.id.rv_readByUsers);
+        rvDeliveredToUsers = findViewById(R.id.rv_deliveredToUsers);
+
+
         setUp();
 
 
@@ -87,23 +99,27 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
         messageObject = new MessageObject(101, Calendar.getInstance().getTimeInMillis(), "Happy Birthday !!!", messageStatusArrayList, true);
 
+       readByList = new ArrayList<>();
+       deliveredToList = new ArrayList<>();
+
         userObjectArrayList = new ArrayList<>();
-        userObjectArrayList.add(new UserObject(1,"user1","",1,""));
-        userObjectArrayList.add(new UserObject(2,"user2","",1,""));
-        userObjectArrayList.add(new UserObject(3,"user3","",1,""));
-        userObjectArrayList.add(new UserObject(4,"user4","",1,""));
-        userObjectArrayList.add(new UserObject(5,"user5","",2,""));
-        userObjectArrayList.add(new UserObject(6,"user6","",2,""));
-        userObjectArrayList.add(new UserObject(7,"user7","",2,""));
-        userObjectArrayList.add(new UserObject(8,"user8","",2,""));
-        userObjectArrayList.add(new UserObject(9,"user9","",2,""));
-        userObjectArrayList.add(new UserObject(10,"user10","",2,""));
+        userObjectArrayList.add(new UserObject(1, "user1", "", 1, ""));
+        userObjectArrayList.add(new UserObject(2, "user2", "", 1, ""));
+        userObjectArrayList.add(new UserObject(3, "user3", "", 1, ""));
+        userObjectArrayList.add(new UserObject(4, "user4", "", 1, ""));
+        userObjectArrayList.add(new UserObject(5, "user5", "", 2, ""));
+        userObjectArrayList.add(new UserObject(6, "user6", "", 2, ""));
+        userObjectArrayList.add(new UserObject(7, "user7", "", 2, ""));
+        userObjectArrayList.add(new UserObject(8, "user8", "", 2, ""));
+        userObjectArrayList.add(new UserObject(9, "user9", "", 2, ""));
+        userObjectArrayList.add(new UserObject(10, "user10", "", 2, ""));
 
+        sortUsers();
 
-        readByUsersAdapter = new readByRvAdapter(this,userObjectArrayList);
-        deliveredToUsersAdapter = new deliveredToRvAdapter(this,userObjectArrayList);
+        readByUsersAdapter = new readByRvAdapter(this, readByList);
+        deliveredToUsersAdapter = new deliveredToRvAdapter(this, deliveredToList);
 
-        rvDeliveredToUsers.setLayoutManager(new LinearLayoutManager(this));
+       rvDeliveredToUsers.setLayoutManager(new LinearLayoutManager(this));
         rvDeliveredToUsers.setHasFixedSize(true);
         rvDeliveredToUsers.setAdapter(deliveredToUsersAdapter);
 
@@ -113,6 +129,23 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         rvReadByUsers.setAdapter(readByUsersAdapter);
 
 
+    }
+
+    private void sortUsers() {
+        readByList.clear();
+        deliveredToList.clear();
+        for (UserObject user: userObjectArrayList) {
+            if(user.getStatus()==READ)
+            {
+                // if user status is READ add to read list
+                readByList.add(user);
+            }else
+            {
+                //if user ststus is DELIVERED add to delivered list
+                deliveredToList.add(user);
+            }
+
+        }
     }
 
     @Override
@@ -152,11 +185,16 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
     @OnClick(R.id.fab)
     public void onViewClicked(View v) {
+
+        //trigger to Message notifier
+        messageNotifier.updateMessageStatus(2,new MessageStatus(2,2,Calendar.getInstance().getTimeInMillis()));
         Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
 
     void notifyUI() {
+
+
         readByUsersAdapter.notifyDataSetChanged();
         deliveredToUsersAdapter.notifyDataSetChanged();
 
