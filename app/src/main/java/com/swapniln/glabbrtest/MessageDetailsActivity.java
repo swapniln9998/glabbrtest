@@ -39,6 +39,7 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
     ArrayList<UserObject> userObjectArrayList;
     ArrayList<UserObject> readByList;
     ArrayList<UserObject> deliveredToList;
+    Map<Integer,UserObject> userMap;
     MessageObject messageObject;
     @BindView(R.id.tvMessageTxt)
     TextView tvMessageTxt;
@@ -70,7 +71,7 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
 
 
 
-    Map<Integer,UserObject> userMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,4 +243,6 @@ public class MessageDetailsActivity extends AppCompatActivity implements Message
         messageNotifier.updateMessageStatus(101,new MessageStatus(2,2,Calendar.getInstance().getTimeInMillis()));
         Toast.makeText(this, "user 2 data gets updated to read status", Toast.LENGTH_SHORT).show();
     }
+
+
 }
