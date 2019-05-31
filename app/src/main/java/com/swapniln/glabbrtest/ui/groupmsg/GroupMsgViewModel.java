@@ -21,14 +21,14 @@ public class GroupMsgViewModel extends ViewModel {
     ArrayList<UserObject> userObjectArrayList;
     ArrayList<UserObject> readByList;
     ArrayList<UserObject> deliveredToList;
-    Map<Integer,UserObject> userMap;
+    Map<Integer, UserObject> userMap;
     MessageObject messageObject;
 
 
     MutableLiveData<ArrayList<UserObject>> readByListLiveData = new MutableLiveData<>();
-    MutableLiveData<ArrayList<UserObject>> deliverToListLiveData= new MutableLiveData<>();
+    MutableLiveData<ArrayList<UserObject>> deliverToListLiveData = new MutableLiveData<>();
 
-    public Map<Integer,UserObject> setUp() {
+    public Map<Integer, UserObject> setUp() {
 
         // create dummy message status data
 
@@ -64,19 +64,15 @@ public class GroupMsgViewModel extends ViewModel {
         userObjectArrayList.add(new UserObject(10, "user10", 0, 2, ""));
 
 
-
-
-
-
-      return setUserMap(userObjectArrayList);
+        return setUserMap(userObjectArrayList);
 
     }
 
     // load user map
     private Map<Integer, UserObject> setUserMap(ArrayList<UserObject> userObjectArrayList) {
         userMap = new HashMap<>();
-        for (UserObject user: userObjectArrayList) {
-            userMap.put(user.getUserID(),user);
+        for (UserObject user : userObjectArrayList) {
+            userMap.put(user.getUserID(), user);
         }
         return userMap;
     }
@@ -84,6 +80,7 @@ public class GroupMsgViewModel extends ViewModel {
     public MessageObject getMessageObject() {
         return messageObject;
     }
+
     public void sortUsers(Map<Integer, UserObject> userObjectMap) {
         readByList.clear();
         deliveredToList.clear();

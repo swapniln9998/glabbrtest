@@ -126,17 +126,21 @@ public class GroupMsgFragment extends Fragment implements MessageNotifier {
         mViewModel.getReadByListLiveData().observe(this, new Observer<ArrayList<UserObject>>() {
             @Override
             public void onChanged(@Nullable ArrayList<UserObject> readUserObjectsList) {
-                //readByList.clear();
-                readByList = readUserObjectsList;
+                readByList.clear();
+                if (readUserObjectsList != null) {
+                    readByList.addAll(readUserObjectsList);
+                }
                 readByUsersAdapter.notifyDataSetChanged();
             }
         });
         mViewModel.getDeliverToListLiveData().observe(this, new Observer<ArrayList<UserObject>>() {
             @Override
             public void onChanged(@Nullable ArrayList<UserObject> deliveredUserObjectsList) {
-               // deliveredToList.clear();
-                deliveredToList = deliveredUserObjectsList;
-             deliveredToUsersAdapter.notifyDataSetChanged();
+               deliveredToList.clear();
+                if (deliveredUserObjectsList != null) {
+                    deliveredToList.addAll(deliveredUserObjectsList);
+                }
+                deliveredToUsersAdapter.notifyDataSetChanged();
             }
         });
 
@@ -162,12 +166,12 @@ public class GroupMsgFragment extends Fragment implements MessageNotifier {
         deliveredToUsersAdapter = new deliveredToRvAdapter(getActivity(), deliveredToList);
 
         rvDeliveredToUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvDeliveredToUsers.setHasFixedSize(true);
+        rvDeliveredToUsers.setHasFixedSize(false);
         rvDeliveredToUsers.setAdapter(deliveredToUsersAdapter);
 
 
         rvReadByUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvReadByUsers.setHasFixedSize(true);
+        rvReadByUsers.setHasFixedSize(false);
         rvReadByUsers.setAdapter(readByUsersAdapter);
     }
 
