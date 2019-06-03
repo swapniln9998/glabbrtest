@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".groupMsgActivity"
+    tools:context=".GroupMsgActivity"
     tools:showIn="@layout/group_msg_fragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
        >
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lay_messageInfo"
         android:orientation="vertical"
         android:layout_width="0dp"
@@ -81,10 +81,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvMessageTime"
             app:srcCompat="@drawable/msg_sent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <android.support.design.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_readByLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lay_messageInfo">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -121,7 +121,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_readBy"
                 tools:layout_editor_absoluteX="0dp" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_readByUsers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -143,10 +143,10 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_readBy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_readBy" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.design.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <android.support.design.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_deliveredToLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_readByLayout">
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -181,7 +181,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_deliveredTo"
                 tools:layout_editor_absoluteX="0dp" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_deliveredToUsers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -204,11 +204,11 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_deliveredTo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_deliveredTo"  />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.design.card.MaterialCardView>
-</android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.NestedScrollView>
-    <android.support.design.widget.FloatingActionButton
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -219,4 +219,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
